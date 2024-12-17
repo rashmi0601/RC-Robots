@@ -1,14 +1,27 @@
+require_relative 'robot'
 
-require_relative 'robot' 
+def get_input
+  puts "Enter warehouse size (e.g., '5 5'):"
+  warehouse_size = gets.chomp
 
-warehouse_size = "5 5"
+  robot_data = []
+  loop do
+    puts "Enter robot position (e.g., '0 1 N') or 'done':"
+    position = gets.chomp
+    break if position.downcase == 'done'
 
-robot_data = [
-  "0 1 N",
-  "MMLMMRRMML"
-]
+    puts "Enter instructions (e.g., 'MMLMMRRMML'):"
+    instructions = gets.chomp
 
-results = Robot.rc_robots(warehouse_size, robot_data)
+    robot_data << [position, instructions]
+  end
 
-puts "Final robot positions and directions:"
+  [warehouse_size, robot_data]
+end
+
+warehouse_size, robot_data = get_input()
+
+results = Robot.rc_robots(warehouse_size, robot_data.flatten) 
+
+puts "\nFinal robot positions and directions:"
 results.each { |result| puts result }
